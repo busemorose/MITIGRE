@@ -1,6 +1,6 @@
 # MITIGRE
 
-<img src="img/mitigre.jpg" width="100%" />
+<img src="img/mitigre.jpg" width="200" />
 
 ## Description
 
