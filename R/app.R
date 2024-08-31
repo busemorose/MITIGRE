@@ -140,7 +140,7 @@ MITIGRE <- function(...) {
 
     df <- reactive({
       req(input$import)
-      utils::read.delim(input$import$datapath, sep = "\t")
+      utils::read.delim(input$import$datapath, sep = ";")
     })
 
     custom_MC <- reactive({
