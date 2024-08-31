@@ -2,6 +2,8 @@
 
 <img src="img/mitigre.jpg" width="200" />
 
+Modèle Intégré de Transfert Isotopique Global des Ressources en Eau
+
 ## Description
 
 MITIGRE is an R package developed by Guillaume Cinkus and Vincent Marc at Avignon Université. It contains one function that launches an R shiny application for modelling isotopic tracers.
