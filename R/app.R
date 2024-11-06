@@ -39,6 +39,7 @@ MITIGRE <- function(...) {
         overflow-y:scroll;
         max-height: 200px;
         height: 200px;
+        opacity: 100 !important;
       }"))
     ),
 
@@ -424,7 +425,7 @@ MITIGRE <- function(...) {
       req(eval_range())
       x <- score(res$best$sim[eval_range()[1]:eval_range()[2]],
                  res$best$obs[eval_range()[1]:eval_range()[2]],
-                 crit = c("NSE", "KGE", "KGENP", "KGE_abs", "alpha", "beta", "rpearson"),
+                 crit = c("NSE", "KGE", "KGENP", "KGE_abs", "alpha", "beta", "rpearson", "RMSE"),
                  allow_NA = input$allow_NA)
 
       data.frame(as.list(x))
