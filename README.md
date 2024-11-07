@@ -1,6 +1,6 @@
 # MITIGRE
 
-<img src="img/mitigre.jpg" width="200" />
+<img src="img/mitigre2.png" width="200" />
 
 Modèle Intégré de Transfert Isotopique Global des Ressources en Eau
 
