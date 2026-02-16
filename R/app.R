@@ -497,7 +497,7 @@ MITIGRE <- function(...) {
       req(type())
       gnr <- function(n_component, type) {
         sliderInput(paste0("p1_range_", type[n_component]),
-                    HTML(p1_name()[[n_component]][1]), value = c(0, 500), min = 1, max = 500, step = 0.1)
+                    HTML(p1_name()[[n_component]][1]), value = c(0, 500), min = 0, max = 500, step = 0.1)
       }
       x <- lapply(seq(n_component()), function(n) gnr(n, type_name()))
       return(x)
