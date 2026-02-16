@@ -1,7 +1,8 @@
 model <- function(obs, Cin, n_run = 1, crit = c("KGE", "NSE", "KGENP", "KGEABS", "RMSE"),
                   eval = "all", allow_NA = FALSE,
-                  warmup_time = 500, warmup_method = c("u_Cin", "u_Cobs", "1_Cin", "1_Cobs"),
+                  warmup_time = 500, warmup_method = c("u_Cin", "u_Cobs", "1_Cin", "1_Cobs", "0"),
                   max_t, type, # "EMM", "EPM", "PEM", "DM", "custom"
+                  isotope, # "18o", "3h", "14c"
                   MC = NULL,
                   p1_min, p1_max, p2_min, p2_max, ratio_min = NULL, ratio_max = NULL) {
 
@@ -45,6 +46,7 @@ model <- function(obs, Cin, n_run = 1, crit = c("KGE", "NSE", "KGENP", "KGEABS",
   if (warmup_method == "u_Cobs") warmup_val <- rep(mean(obs, na.rm = TRUE), warmup_time)
   if (warmup_method == "1_Cin") warmup_val <- rep(Cin[1], warmup_time)
   if (warmup_method == "1_Cobs") warmup_val <- rep(obs[1], warmup_time)
+  if (warmup_method == "0") warmup_val <- rep(0, warmup_time)
 
   Cin_warmup <- c(warmup_val, Cin)
 
@@ -100,11 +102,11 @@ model <- function(obs, Cin, n_run = 1, crit = c("KGE", "NSE", "KGENP", "KGEABS",
 
       if (type[c] != "PFM") {
         MC <- do.call(paste0("MC_", type[c]),
-                      list(all$p1[[paste0(type[c], "_", n_type[c])]][n], all$p2[[paste0(type[c], "_", n_type[c])]][n], max_t))
+                      list(all$p1[[paste0(type[c], "_", n_type[c])]][n], all$p2[[paste0(type[c], "_", n_type[c])]][n], isotope, max_t))
         sim_list[[c]] <- rev(stats::convolve(rev(MC), Cin_warmup, conj = TRUE, type = "open"))
         sim_list[[c]] <- sim_list[[c]][(warmup_time + 1):(warmup_time + l_obs)] * all$ratio[[paste0(type[c], "_", n_type[c])]][n]
       } else {
-        sim_list[[c]] <- MC_PFM(all$p1[[paste0(type[c], "_", n_type[c])]][n], Cin_warmup)
+        sim_list[[c]] <- MC_PFM(all$p1[[paste0(type[c], "_", n_type[c])]][n], Cin_warmup, isotope)
         sim_list[[c]] <- sim_list[[c]][(warmup_time + 1):(warmup_time + l_obs)] * all$ratio[[paste0(type[c], "_", n_type[c])]][n]
       }
     }

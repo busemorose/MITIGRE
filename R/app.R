@@ -65,6 +65,9 @@ MITIGRE <- function(...) {
         column(4, numericInput("max_t", "Length of MC", value = 1000, min = 1, max = 10000, step = 1)),
         column(4, numericInput("warmup_t", "Warmup time", value = 1000, min = 1, max = 10000, step = 1))),
       fluidRow(
+        column(12, selectInput("iso_type", "Isotope", choices = c("18o", "3h", "14c")))
+      ),
+      fluidRow(
         column(4, uiOutput("ui_p1")),
         column(4, uiOutput("ui_p2")),
         column(4, uiOutput("ui_ratio"))
@@ -203,6 +206,7 @@ MITIGRE <- function(...) {
     observeEvent(c(lapply(names(input)[grep("p1_|p2_|ratio_", names(input))], function(name) input[[name]]),
                    input$max_t,
                    input$import, input$import_mc, input$eval_range, input$allow_NA,
+                   input$iso_type,
                    input$warmup_m, input$warmup_t), {
                      req(eval_range(), type())
 
@@ -217,7 +221,7 @@ MITIGRE <- function(...) {
                      }
 
                      # Run model function
-                     x <- model(df()$obs, df()$Cin, crit = input$obj,
+                     x <- model(df()$obs, df()$Cin, crit = input$obj, isotope = input$iso_type,
                                 type = isolate(type()), MC = custom_MC(), max_t = input$max_t,
                                 eval = c(eval_range()[1], eval_range()[2]), allow_NA = input$allow_NA,
                                 warmup_method = input$warmup_m, warmup_time = input$warmup_t,
@@ -253,7 +257,7 @@ MITIGRE <- function(...) {
         }
 
         # Run model function
-        x <- model(df()$obs, df()$Cin, n_run = input$n_run, crit = input$obj,
+        x <- model(df()$obs, df()$Cin, n_run = input$n_run, crit = input$obj, isotope = input$iso_type,
                    type = type(), MC = custom_MC(), max_t = input$max_t,
                    eval = c(eval_range()[1], eval_range()[2]), allow_NA = input$allow_NA,
                    warmup_method = input$warmup_m, warmup_time = input$warmup_t,
@@ -463,7 +467,7 @@ MITIGRE <- function(...) {
       req(type())
       gnr <- function(n_component, type) {
         sliderInput(paste0("p1_", type[n_component]),
-                    HTML(p1_name()[[n_component]][1]), value = 6, min = 1, max = 1000, step = 0.1)
+                    HTML(p1_name()[[n_component]][1]), value = 6, min = 0, max = 500, step = 0.1)
       }
       x <- lapply(seq(n_component()), function(n) gnr(n, type_name()))
       return(x)
@@ -493,7 +497,7 @@ MITIGRE <- function(...) {
       req(type())
       gnr <- function(n_component, type) {
         sliderInput(paste0("p1_range_", type[n_component]),
-                    HTML(p1_name()[[n_component]][1]), value = c(1, 1000), min = 1, max = 1000, step = 0.1)
+                    HTML(p1_name()[[n_component]][1]), value = c(0, 500), min = 1, max = 500, step = 0.1)
       }
       x <- lapply(seq(n_component()), function(n) gnr(n, type_name()))
       return(x)
