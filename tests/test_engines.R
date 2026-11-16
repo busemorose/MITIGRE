@@ -1,5 +1,6 @@
+pkg_dir <- if (dir.exists("inst/app")) "inst" else system.file(package = "MITIGRE")
 ui_files <- c("explore.R", "notes.R", "ui_helpers.R")
-for (f in sort(list.files("R", pattern = "\\.R$", full.names = TRUE))) {
+for (f in sort(list.files(file.path(pkg_dir, "app", "R"), pattern = "\\.R$", full.names = TRUE))) {
   if (!basename(f) %in% ui_files) source(f, encoding = "UTF-8")
 }
 
@@ -101,13 +102,13 @@ for (o in c(1, 0.5)) {
                            sprintf("TracerLPM-backward == PFM_VB (o = %.1f) : écart relatif max %.1e", o, max(abs(b_pfm / v_pfm - 1)))))
 }
 
-d3 <- read_dataset("data/exemple_3H_mensuel.csv")
+d3 <- read_dataset(file.path(pkg_dir, "extdata", "exemple_3H_mensuel.csv"))
 p3 <- make_prep(d3, "3h", infer_dt(d3$date), "none", 0L, "1", 1000, 1e-7, 1e6, 0)
 s3 <- tlpm_component("DM", 144, 0.3, p3)
 rel3 <- stats::sd((d3$obs - s3) / s3, na.rm = TRUE)
 results <- c(results, ok(abs(rel3 - 0.02) < 0.006,
                          sprintf("Exemple 3H : TracerLPM(DM, 12 a, DP 0,3) reproduit obs (bruit relatif %.3f, attendu 0,02)", rel3)))
-d18 <- read_dataset("data/exemple_18O_mensuel.csv")
+d18 <- read_dataset(file.path(pkg_dir, "extdata", "exemple_18O_mensuel.csv"))
 p18 <- make_prep(d18, "18o", infer_dt(d18$date), "u_Cin", 1000L, "1", 1000, 1e-7, 1e6, 0)
 s18 <- tlpm_component("EPM", 8, 1.3, p18)
 sd18 <- stats::sd(d18$obs - s18)

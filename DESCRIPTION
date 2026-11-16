@@ -1,0 +1,20 @@
+Package: MITIGRE
+Title: Modèle Intégré de Transfert Isotopique Global des Ressources en Eau
+Version: 2.0.0
+Authors@R: c(
+    person("Guillaume", "Cinkus", email = "guillaume.cinkus@gmail.com", role = c("aut", "cre")),
+    person("Vincent", "Marc", role = "aut"))
+Description: Shiny application for modelling isotopic tracers (3H, 14C, 18O, 2H) with
+    lumped parameter models (exponential, exponential-piston, partial exponential,
+    dispersion and piston flow models, and mixtures), calibrated by Monte Carlo, with a
+    forward (convolution) and a backward (TracerLPM, Jurgens et al. 2012) engine.
+License: GPL-3
+Encoding: UTF-8
+Depends: R (>= 4.0.0)
+Imports:
+    bslib,
+    ggplot2,
+    parallel,
+    shiny,
+    stats,
+    utils

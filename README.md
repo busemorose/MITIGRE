@@ -6,30 +6,32 @@ Modèle Intégré de Transfert Isotopique Global des Ressources en Eau
 
 ## Description
 
-MITIGRE is an R shiny application developed by Guillaume Cinkus and Vincent Marc at Avignon Université for modelling isotopic tracers (³H, ¹⁴C, ¹⁸O, ²H) with lumped parameter models (EMM, EPM, PEM, DM, PFM and mixtures of up to 4 components), calibrated by Monte Carlo. Two computation engines are available: **Forward** (convolution of the whole input series, corrected MITIGRE scheme) and **Backward** (stepping back in time from each sample date, TracerLPM method; Jurgens et al., 2012).
+MITIGRE is an R package developed by Guillaume Cinkus and Vincent Marc at Avignon Université. It contains one function that launches an R shiny application for modelling isotopic tracers (³H, ¹⁴C, ¹⁸O, ²H) with lumped parameter models (EMM, EPM, PEM, DM, PFM and mixtures of up to 4 components), calibrated by Monte Carlo. Two computation engines are available: **Forward** (convolution of the whole input series, corrected MITIGRE scheme) and **Backward** (stepping back in time from each sample date, TracerLPM method; Jurgens et al., 2012).
 
 ## Installation
 
 MITIGRE requires an installation of R `4.0.0` or later. The instruction for the installation and the download of R can be found on the [CRAN website](https://cran.r-project.org/).
 
-Once R is installed, install the required packages:
+Once R is installed, MITIGRE can be installed from [GitHub](https://github.com/busemorose/MITIGRE).
 
 ``` r
-install.packages(c("shiny", "bslib", "ggplot2"))
+if (!require("remotes")) install.packages("remotes") # install remotes package if needed
+remotes::install_github("busemorose/MITIGRE") # install MITIGRE package
 ```
 
 ## Launch
 
-The application can be launched directly from [GitHub](https://github.com/busemorose/MITIGRE):
+Once the package is installed, the application can be loaded with the `MITIGRE()` function.
 
 ``` r
-shiny::runGitHub("MITIGRE", "busemorose")
+library(MITIGRE)
+MITIGRE()
 ```
 
-or from a local copy of the repository (`git clone https://github.com/busemorose/MITIGRE.git` or *Code > Download ZIP*):
+or
 
-``` r
-shiny::runApp("path/to/MITIGRE")
+```
+MITIGRE::MITIGRE()
 ```
 
 ## Data import
@@ -42,7 +44,11 @@ The data import field allows to load a file with the following conditions:
 -   Decimal separator is a dot `.`
 -   Missing values (`NA`) are allowed in `obs`
 
-Example files are provided in the `data/` folder.
+Example files are provided with the package:
+
+``` r
+list.files(system.file("extdata", package = "MITIGRE"), full.names = TRUE)
+```
 
 ## Reference
 
